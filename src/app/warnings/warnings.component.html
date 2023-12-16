@@ -1,0 +1,2 @@
+<app-data-grid *ngIf="autobahnService?.warningList$ | async as warningList"
+               [ELEMENT_DATA]="warningList.warning"></app-data-grid>

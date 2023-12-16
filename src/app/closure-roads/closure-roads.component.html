@@ -1,0 +1,2 @@
+<app-data-grid *ngIf="autobahnService?.closureList$ | async as closureList"
+               [ELEMENT_DATA]="closureList.closure"></app-data-grid>

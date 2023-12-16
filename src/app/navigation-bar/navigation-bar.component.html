@@ -1,0 +1,22 @@
+<div class="nav-bar-wrapper">
+  <form [formGroup]="form">
+    <mat-form-field color="primary" appearance="fill" *ngIf="autobahnService.autobahnList$ | async as autobahnList">
+      <mat-label>Autobahn</mat-label>
+      <mat-select formControlName="autobahnList">
+        <mat-option *ngFor="let filter of autobahnList.roads" [value]="filter">
+          {{ filter }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <mat-toolbar>
+    <button mat-raised-button color="primary" (click)="navigate('road-works')">Road Works</button>
+    <button mat-raised-button color="primary" (click)="navigate('warnings')">Warnings</button>
+    <button mat-raised-button color="primary" (click)="navigate('closure-roads')">Closure Roads</button>
+    <button mat-raised-button color="primary" (click)="navigate('parking-lorry')">Parking Lorry</button>
+    <button mat-raised-button color="primary" (click)="navigate('electric-charging-station')">Electric Charging
+      Station
+    </button>
+  </mat-toolbar>
+</div>

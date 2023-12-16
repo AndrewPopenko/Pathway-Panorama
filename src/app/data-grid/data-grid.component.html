@@ -1,1 +1,41 @@
-<p>data-grid works!</p>
+<div class="mat-elevation-z8">
+  <table mat-table [multiTemplateDataRows]="true" [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+      <ng-container *ngIf="column !== 'act'; else action">
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let row">
+          <span *ngIf="column !== 'startTimestamp'">{{ row[column] }}</span>
+          <span *ngIf="column === 'startTimestamp'">{{ row[column] | date }}</span>
+        </td>
+      </ng-container>
+      <ng-template #action>
+        <th mat-header-cell *matHeaderCellDef>act</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon (click)="expandedElement = expandedElement === row ? null : row">
+            {{ expandedElement === row ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </td>
+      </ng-template>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+        <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+          <p *ngIf="row.description">{{ row.description }}</p>
+          <p *ngIf="row.routeRecommendation">{{ row.routeRecommendation }}</p>
+          <p *ngIf="row.footer">{{ row.footer }}</p>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.expanded]="expandedElement === row"></tr>
+
+    <tr mat-row class="detail-row" *matRowDef="let row; columns: ['expandedDetail']"
+    ></tr>
+  </table>
+
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 30]"></mat-paginator>
+</div>

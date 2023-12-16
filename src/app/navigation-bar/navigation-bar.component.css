@@ -1,0 +1,14 @@
+button {
+  margin-right: 10px;
+}
+
+.nav-bar-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-select {
+  height: 31px;
+}
+
+/*# sourceMappingURL=navigation-bar.component.css.map */

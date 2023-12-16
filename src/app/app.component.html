@@ -1,8 +1,8 @@
-<nav>
-  <ul>
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/data-grid">Data Grid</a></li>
-    <li><a routerLink="/map-view">Map View</a></li>
-  </ul>
-</nav>
+<mat-toolbar class="title" [color]="'primary'">
+  <div>Pathway-Panorama - real-time information about Germany's autobahns</div>
+</mat-toolbar>
+<div class="spinner-overlay" *ngIf="loaderService.isLoading$ | async as isLoading">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>
+<app-navigation-bar></app-navigation-bar>
 <router-outlet></router-outlet>

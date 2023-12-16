@@ -1,13 +1,17 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { HomeComponent } from "./home/home.component";
-import { DataGridComponent } from "./data-grid/data-grid.component";
 import { MapViewComponent } from "./map-view/map-view.component";
+import { ParkingLorryComponent } from "./parking-lorry/parking-lorry.component";
+import { RoadWorksComponent } from "./road-works/road-works.component";
+import { WarningsComponent } from "./warnings/warnings.component";
+import { ClosureRoadsComponent } from "./closure-roads/closure-roads.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'data-grid', component: DataGridComponent},
+  {path: '', redirectTo: '/base', pathMatch: 'full'},
+  {path: 'road-works', component: RoadWorksComponent},
+  {path: 'warnings', component: WarningsComponent},
+  {path: 'closure-roads', component: ClosureRoadsComponent},
+  {path: 'parking-lorry', component: ParkingLorryComponent},
   {path: 'map-view', component: MapViewComponent}
 ];
 
