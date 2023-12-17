@@ -22,7 +22,6 @@ import { RoadWorksComponent } from './road-works/road-works.component';
 import { WarningsComponent } from './warnings/warnings.component';
 import { ClosureRoadsComponent } from './closure-roads/closure-roads.component';
 import { MatButtonModule } from "@angular/material/button";
-import { MatGridListModule } from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import { MatGridListModule } from "@angular/material/grid-list";
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
