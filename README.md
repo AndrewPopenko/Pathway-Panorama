@@ -1,10 +1,17 @@
-# PathwayPanorama
+# Pathway-Panorama
+
+This application provides real-time information on road events such as roadworks, parking, closures, and warnings. It features a dynamic data grid and is designed for easy navigation and accessibility.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.10.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Running the Application with Docker Compose
+
+1. Build and run the Docker container: docker-compose up --build
+2. Access the application in a browser at http://localhost:4200
 
 ## Code scaffolding
 
