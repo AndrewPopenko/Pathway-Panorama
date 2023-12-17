@@ -1,0 +1,2 @@
+<app-data-grid *ngIf="autobahnService?.electricChargingStationList$ | async as electricChargingStationList"
+               [ELEMENT_DATA]="electricChargingStationList.electric_charging_station"></app-data-grid>

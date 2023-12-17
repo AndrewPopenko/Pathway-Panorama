@@ -1,11 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { Roadwork } from "@model/roadwork";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { ParkingLorry } from "@model/lorry-parking";
-import { Closure } from "@model/closure";
-import { Warning } from "@model/warning";
+import { RoadEvent } from "@model/shared";
 
 @Component({
   selector: 'app-data-grid',
@@ -21,25 +18,25 @@ import { Warning } from "@model/warning";
   ]
 })
 export class DataGridComponent implements AfterViewInit {
-  private _elementData: Roadwork[] | ParkingLorry[] | Closure[] | Warning[] = [];
+  private _elementData: RoadEvent[] = [];
 
-  @Input() set ELEMENT_DATA(data: Roadwork[] | ParkingLorry[] | Closure[] | Warning[]) {
+  @Input() set ELEMENT_DATA(data: RoadEvent[]) {
     this._elementData = data;
-    this.dataSource = new MatTableDataSource<Roadwork | ParkingLorry | Closure | Warning>(this._elementData);
+    this.dataSource = new MatTableDataSource<RoadEvent>(this._elementData);
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
   }
 
-  get ELEMENT_DATA(): Roadwork[] | ParkingLorry[] | Closure[] | Warning[] {
+  get ELEMENT_DATA(): RoadEvent[] {
     return this._elementData;
   }
 
   displayedColumns: string[] = ['act', 'title', 'subtitle', 'startTimestamp'];
-  dataSource = new MatTableDataSource<Roadwork | ParkingLorry | Closure | Warning>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<RoadEvent>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
-  expandedElement: Roadwork | ParkingLorry | Closure | Warning | null | undefined;
+  expandedElement: RoadEvent | null | undefined;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this?.dataSource ? this?.paginator : null;

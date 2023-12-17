@@ -22,6 +22,7 @@ import { RoadWorksComponent } from './road-works/road-works.component';
 import { WarningsComponent } from './warnings/warnings.component';
 import { ClosureRoadsComponent } from './closure-roads/closure-roads.component';
 import { MatButtonModule } from "@angular/material/button";
+import { ElectricChargingStationComponent } from './electric-charging-station/electric-charging-station.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { MatButtonModule } from "@angular/material/button";
     ParkingLorryComponent,
     RoadWorksComponent,
     WarningsComponent,
-    ClosureRoadsComponent
+    ClosureRoadsComponent,
+    ElectricChargingStationComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@
         </td>
       </ng-container>
       <ng-template #action>
-        <th mat-header-cell *matHeaderCellDef>act</th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row">
           <mat-icon (click)="expandedElement = expandedElement === row ? null : row">
             {{ expandedElement === row ? 'expand_less' : 'expand_more' }}

@@ -5,10 +5,11 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { Api } from "./api";
 import { SpinnerService } from "./spinner.service";
 import { Roadwork, Roadworks } from "@model/roadwork";
-import { Coordinate, DisplayType } from "@model/shared";
+import { Coordinate, DisplayType, RoadEvent } from "@model/shared";
 import { ParkingLorries, ParkingLorry } from "@model/lorry-parking";
 import { Closure, Closures } from "@model/closure";
 import { Warning, Warnings } from "@model/warning";
+import { ElectricChargingStation, ElectricChargingStations } from "@model/electric-charging-station";
 
 describe('AutobahnService', () => {
   let service: AutobahnService;
@@ -102,7 +103,20 @@ describe('AutobahnService', () => {
     expect(spinnerServiceMock.hideSpinner).toHaveBeenCalled();
   });
 
-  const mockData: Roadwork | ParkingLorry | Closure | Warning = {
+  it('should retrieve electric charging station data', () => {
+    const dummyData: ElectricChargingStations = {electric_charging_station: [mockData as ElectricChargingStation]};
+    service.getElectricChargingStation('A1').subscribe((data) => {
+      expect(data).toEqual(dummyData);
+      expect(spinnerServiceMock.showSpinner).toHaveBeenCalled();
+    });
+
+    const req = httpTestingController.expectOne(Api.electricChargingStationList('A1'));
+    expect(req.request.method).toBe('GET');
+    req.flush(dummyData);
+    expect(spinnerServiceMock.hideSpinner).toHaveBeenCalled();
+  });
+
+  const mockData: RoadEvent = {
     "extent": "10.72373,53.91974,10.7477,54.00597",
     "identifier": "Uk9BRFdPUktTX19tZG0udml6X19MTVMvcl9MTVMvNjUzMjE5X0QgIFNIIExNUy1TSC4w",
     "routeRecommendation": [],
@@ -112,7 +126,7 @@ describe('AutobahnService', () => {
     } as Coordinate,
     "footer": [],
     "icon": "123",
-    "isBlocked": "false",
+    "isBlocked": false,
     "description": [
       "Beginn: 18.09.2023 00:00",
       "Ende: 30.06.2024 23:59",

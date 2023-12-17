@@ -48,7 +48,7 @@ describe('DataGridComponent', () => {
     } as Coordinate,
     "footer": [],
     "icon": "123",
-    "isBlocked": "false",
+    "isBlocked": false,
     "description": [
       "Beginn: 18.09.2023 00:00",
       "Ende: 30.06.2024 23:59",

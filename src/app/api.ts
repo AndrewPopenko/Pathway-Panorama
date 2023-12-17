@@ -6,4 +6,5 @@ export class Api {
   static lorryParkingList = (roadId: string) => Api.baseUrl + `/${roadId}/services/parking_lorry`;
   static warningsList = (roadId: string) => Api.baseUrl + `/${roadId}/services/warning`;
   static closuresList = (roadId: string) => Api.baseUrl + `/${roadId}/services/closure`;
+  static electricChargingStationList = (roadId: string) => Api.baseUrl + `/${roadId}/services/electric_charging_station`;
 }
