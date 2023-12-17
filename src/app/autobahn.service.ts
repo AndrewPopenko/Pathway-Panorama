@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, catchError, delay, finalize, Observable, of, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, finalize, Observable, of, tap, throwError } from "rxjs";
 import { Autobahn } from '@model/autobahn';
 import { Api } from "./api";
 import { Roadworks } from "@model/roadwork";
@@ -25,7 +25,6 @@ export class AutobahnService {
   autobahnList$: Observable<Autobahn> = this.http.get<Autobahn>(Api.autobahnList)
     .pipe(
       tap(() => this.spinnerService.showSpinner()),
-      delay(5000),
       catchError(this.handleError<Autobahn>('getAutobahns', {roads: []} as Autobahn)),
       finalize(() => this.spinnerService.hideSpinner()));
 
@@ -42,7 +41,6 @@ export class AutobahnService {
   getRoadWorksList(roadId: string): Observable<Roadworks> {
     return this.http.get<Roadworks>(Api.roadWorksList(roadId)).pipe(
       tap(() => this.spinnerService.showSpinner()),
-      delay(5000),
       tap((roadworks: Roadworks) => this._roadworkListSubject.next(roadworks)),
       catchError(this.handleError<Roadworks>('getRoadWorksList', {} as Roadworks)),
       finalize(() => this.spinnerService.hideSpinner())
@@ -50,33 +48,31 @@ export class AutobahnService {
   }
 
   getLorryParkingList(roadId: string): Observable<ParkingLorries> {
-    return this.http.get<ParkingLorries>(Api.lorryParkingList(roadId)).pipe(
-      tap(() => this.spinnerService.showSpinner()),
-      tap((parking: ParkingLorries) => this._lorryParkingListSubject.next(parking)),
-      catchError(this.handleError<ParkingLorries>('getLorryParkingList', {} as ParkingLorries)),
-      finalize(() => this.spinnerService.hideSpinner())
-    )
+    return this.handleRequest(this.http.get<ParkingLorries>(Api.lorryParkingList(roadId)),
+      (parking: ParkingLorries) => this._lorryParkingListSubject.next(parking),
+      'getLorryParkingList')
   }
 
   getWarningList(roadId: string): Observable<Warnings> {
-    return this.http.get<Warnings>(Api.warningsList(roadId)).pipe(
-      tap(() => this.spinnerService.showSpinner()),
-      tap((warnings: Warnings) => this._warningListSubject$.next(warnings)),
-      catchError(this.handleError<Warnings>('getWarningList', {} as Warnings)),
-      finalize(() => this.spinnerService.hideSpinner())
-    )
+    return this.handleRequest(this.http.get<Warnings>(Api.warningsList(roadId)),
+      (warnings: Warnings) => this._warningListSubject$.next(warnings), 'getWarningList')
   }
 
   getClosuresList(roadId: string): Observable<Closures> {
-    return this.http.get<Closures>(Api.closuresList(roadId)).pipe(
+    return this.handleRequest(this.http.get<Closures>(Api.closuresList(roadId)),
+      (closures: Closures) => this._closureListSubject.next(closures), 'getClosuresList')
+  }
+
+  private handleRequest<T>(obs$: Observable<T>, callback: (data: T) => void, operation = 'operation'): Observable<T> {
+    return obs$.pipe(
       tap(() => this.spinnerService.showSpinner()),
-      tap((closures: Closures) => this._closureListSubject.next(closures)),
-      catchError(this.handleError<Closures>('getClosuresList', {} as Closures)),
+      tap((data: T) => callback(data)),
+      catchError(this.handleError<T>(operation, {} as T)),
       finalize(() => this.spinnerService.hideSpinner())
     )
   }
 
-  handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} failed: `, error);
 

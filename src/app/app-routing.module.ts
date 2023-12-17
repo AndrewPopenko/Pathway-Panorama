@@ -7,7 +7,7 @@ import { WarningsComponent } from "./warnings/warnings.component";
 import { ClosureRoadsComponent } from "./closure-roads/closure-roads.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/base', pathMatch: 'full'},
+  {path: '', redirectTo: '/road-works', pathMatch: 'full'},
   {path: 'road-works', component: RoadWorksComponent},
   {path: 'warnings', component: WarningsComponent},
   {path: 'closure-roads', component: ClosureRoadsComponent},
