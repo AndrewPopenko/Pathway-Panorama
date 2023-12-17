@@ -3,9 +3,10 @@
 
     <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
       <ng-container *ngIf="column !== 'act'; else action">
-        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <th mat-header-cell *matHeaderCellDef>{{ columnHeaders[column] }}</th>
         <td mat-cell *matCellDef="let row">
-          <span *ngIf="column !== 'startTimestamp'">{{ row[column] }}</span>
+          <span *ngIf="!['startTimestamp', 'isBlocked'].includes(column)">{{ row[column] }}</span>
+          <span *ngIf="column === 'isBlocked'">{{ !row[column] ? 'Yes' : 'No' }}</span>
           <span *ngIf="column === 'startTimestamp'">{{ row[column] | date }}</span>
         </td>
       </ng-container>
@@ -24,7 +25,6 @@
         <div class="element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
           <p *ngIf="row.description">{{ row.description }}</p>
           <p *ngIf="row.routeRecommendation">{{ row.routeRecommendation }}</p>
-          <p *ngIf="row.footer">{{ row.footer }}</p>
         </div>
       </td>
     </ng-container>

@@ -32,7 +32,10 @@ export class DataGridComponent implements AfterViewInit {
     return this._elementData;
   }
 
-  displayedColumns: string[] = ['act', 'title', 'subtitle', 'startTimestamp'];
+  displayedColumns: string[] = ['act', 'title', 'subtitle', 'isBlocked', 'startTimestamp'];
+  columnHeaders: {
+    [key: string]: string
+  } = {'act': 'act', 'title': 'Title', 'subtitle': 'Subtitle', 'isBlocked': 'Is Blocked', 'startTimestamp': 'Date'};
   dataSource = new MatTableDataSource<RoadEvent>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
