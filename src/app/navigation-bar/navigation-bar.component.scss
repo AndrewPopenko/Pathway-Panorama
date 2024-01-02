@@ -10,3 +10,10 @@ button {
 mat-select {
   height: 31px;
 }
+
+form {
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  margin: 0 15px;
+}

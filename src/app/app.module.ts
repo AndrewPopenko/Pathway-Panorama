@@ -23,6 +23,7 @@ import { WarningsComponent } from './warnings/warnings.component';
 import { ClosureRoadsComponent } from './closure-roads/closure-roads.component';
 import { MatButtonModule } from "@angular/material/button";
 import { ElectricChargingStationComponent } from './electric-charging-station/electric-charging-station.component';
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ElectricChargingStationComponent } from './electric-charging-station/el
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, catchError, finalize, Observable, of, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, combineLatest, finalize, map, Observable, of, tap, throwError } from "rxjs";
 import { Autobahn } from '@model/autobahn';
 import { Api } from "./api";
-import { Roadworks } from "@model/roadwork";
+import { Roadwork, Roadworks } from "@model/roadwork";
 import { ParkingLorries } from "@model/lorry-parking";
 import { Warnings } from "@model/warning";
 import { SpinnerService } from "./spinner.service";
@@ -23,6 +23,7 @@ export class AutobahnService {
   private _warningListSubject: BehaviorSubject<Warnings | null> = new BehaviorSubject<Warnings | null>(null);
   private _closureListSubject: BehaviorSubject<Closures | null> = new BehaviorSubject<Closures | null>(null);
   private _electricChargingStationListSubject: BehaviorSubject<ElectricChargingStations | null> = new BehaviorSubject<ElectricChargingStations | null>(null);
+  private _showOnlyBlockedEventsSubject: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(false)
 
   autobahnList$: Observable<Autobahn> = this.http.get<Autobahn>(Api.autobahnList)
     .pipe(
@@ -30,8 +31,22 @@ export class AutobahnService {
       catchError(this.handleError<Autobahn>('getAutobahns', {roads: []} as Autobahn)),
       finalize(() => this.spinnerService.hideSpinner()));
 
+  showOnlyBlockedEvents$: Observable<boolean | null> = this._showOnlyBlockedEventsSubject.asObservable();
+
   selectedAutobahn$: Observable<string | null> = this._selectedAutobahnSubject.asObservable();
-  roadworksList$: Observable<Roadworks | null> = this._roadworkListSubject.asObservable();
+  // roadworksList$: Observable<Roadworks | null> = this._roadworkListSubject.asObservable();
+
+  roadworksList$: Observable<Roadwork[] | null> = combineLatest([
+    this._roadworkListSubject,
+    this.showOnlyBlockedEvents$
+  ]).pipe(
+    map(([roadworks, showOnlyLockedEvents]) => {
+      return roadworks?.roadworks?.filter(
+        (roadwork: Roadwork) => showOnlyLockedEvents ? roadwork?.isBlocked === showOnlyLockedEvents : true
+      ) || null
+    })
+  );
+
   lorryParkingList$: Observable<ParkingLorries | null> = this._lorryParkingListSubject.asObservable();
   warningList$: Observable<Warnings | null> = this._warningListSubject.asObservable();
   closureList$: Observable<Closures | null> = this._closureListSubject.asObservable();
@@ -69,6 +84,10 @@ export class AutobahnService {
   getElectricChargingStation(roadId: string): Observable<ElectricChargingStations> {
     return this.handleRequest(this.http.get<ElectricChargingStations>(Api.electricChargingStationList(roadId)),
       (electric: ElectricChargingStations) => this._electricChargingStationListSubject.next(electric), 'getElectricChargingStation')
+  }
+
+  shouldShowOnlyBlockedEvents(flag: boolean) {
+    this._showOnlyBlockedEventsSubject.next(flag)
   }
 
   private handleRequest<T>(obs$: Observable<T>, callback: (data: T) => void, operation = 'operation'): Observable<T> {
